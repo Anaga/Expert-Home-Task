@@ -10,8 +10,6 @@
 #include <QSet>
 #include <QDebug>
 
-QSet <QString> GetAllLetterSet(const QString word);
-
 int GetCombinationCount(int N);
 
 class helperClass
@@ -19,15 +17,12 @@ class helperClass
 private:
     //main data storage
     QHash<QString, QStringList> m_hash;
-
     QStringList GetAllLettersList(const QString word);
-    QStringList setToList(QSet<QString> wordSet);
-
 
 public:
     helperClass();
     int getHashSize();
-    QStringList getListByWord(QString word);
+    QStringList getListByWord(const QString word);
     void printHash();
 };
 

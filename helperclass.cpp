@@ -1,35 +1,6 @@
 #include "helperclass.h"
 #include <QtDebug>
 
-QSet<QString> GetAllLetterSet(const QString word)
-{
-    const int lettersCount = 4;
-    const int wordLen = word.length();
-    QSet <QString> qSetRet;
-
-    if (lettersCount == wordLen) {
-        qSetRet.insert(word);
-        return qSetRet;
-    }
-
-    if (lettersCount+1 == wordLen) {
-        qSetRet.insert(word);
-        qSetRet.insert(word.chopped(1));
-        qSetRet.insert(word.right(wordLen-1));
-        return qSetRet;
-    }
-
-    if (lettersCount+1 < wordLen) {
-        qSetRet.insert(word);
-
-        QString const leftPart = word.chopped(1);
-        qSetRet.unite(GetAllLetterSet(leftPart));
-
-        QString const rightPart = word.right(wordLen-1);
-        qSetRet.unite(GetAllLetterSet(rightPart));
-    }
-    return qSetRet;
-}
 
 int GetCombinationCount(int N)
 {
@@ -41,7 +12,7 @@ int GetCombinationCount(int N)
 
 helperClass::helperClass()
 {
-    qDebug() << "helperClass init";
+
 }
 
 int helperClass::getHashSize()
@@ -51,11 +22,6 @@ int helperClass::getHashSize()
 
 QStringList helperClass::GetAllLettersList(const QString word)
 {
-    if (m_hash.contains(word)) {
-        qDebug() << "Word " << word << "already in hash, return from mememory";
-        return m_hash.value(word);
-    }
-
     const int lettersCount = 4;
     const int wordLen = word.length();
     QStringList qslRet;
@@ -72,19 +38,17 @@ QStringList helperClass::GetAllLettersList(const QString word)
     int start = 0;
     int finish = 1+wordLen-lettersCount;
     int chopSize = lettersCount;
-    QString qsChop = "";
-
+    QString chop = "";
 
     do {
         start=0;
-        qDebug() << "Finish" <<finish << "ChopSize:" << chopSize;
         while (start!=finish) {
-            qsChop=word.mid(start, chopSize);
+            chop=word.mid(start, chopSize);
 
-            if (m_hash.contains(qsChop)) {
-                qslRet<<(m_hash.value(qsChop));
+            if (m_hash.contains(chop)) {
+                qslRet<<(m_hash.value(chop));
             } else {
-                qslRet.append(qsChop);
+                qslRet.append(chop);
             }
             start++;
         }
@@ -94,18 +58,11 @@ QStringList helperClass::GetAllLettersList(const QString word)
     } while (finish>1);
 
     qslRet.append(word);
-
     return qslRet;
 }
 
-QStringList helperClass::setToList(QSet<QString> wordSet)
-{
-    QStringList qslRet = wordSet.toList();
-    qslRet.sort();
-    return qslRet;
-}
 
-QStringList helperClass::getListByWord(QString word)
+QStringList helperClass::getListByWord(const QString word)
 {
     QStringList qslRet;
     if (word.length()<4){
@@ -113,7 +70,6 @@ QStringList helperClass::getListByWord(QString word)
     }
 
     if (m_hash.contains(word)) {
-        qDebug() << "Word " << word << "already in hash, return from mememory";
         return m_hash.value(word);
     }
     else {
