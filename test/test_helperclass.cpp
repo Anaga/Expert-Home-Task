@@ -118,4 +118,48 @@ TEST(HelperClass, i18N_VS_l10N) {
     EXPECT_EQ(GetCombinationCount(word.length()), qsList.length());
 }
 
+TEST(HelperClass, DoubleWord) {
+    QString word = "AbcdeBbcde";
+    helperClass helper;
+    QStringList qsList;
+    qsList = helper.getListByWord(word);
+    EXPECT_EQ(1, helper.getHashSize());
+    EXPECT_EQ(GetCombinationCount(word.length()), qsList.length());
+    qInfo()<< qsList;
+}
+
+TEST(HelperClass, TrippleWord) {
+    QString word = "AbcdeBbcdeCbcde";
+    helperClass helper;
+    QStringList qsList;
+    qsList = helper.getListByWord(word);
+    EXPECT_EQ(1, helper.getHashSize());
+    EXPECT_EQ(GetCombinationCount(word.length()), qsList.length());
+    qInfo()<< qsList.size();
+    qInfo()<< qsList;
+}
+
+TEST(HelperClass, SomeSpace) {
+    QString word = "Namespace";
+    helperClass helper;
+    QStringList qsList;
+    qsList = helper.getListByWord(word);
+    EXPECT_EQ(1, helper.getHashSize());
+    EXPECT_EQ(GetCombinationCount(word.length()), qsList.length());
+    EXPECT_TRUE(qsList.contains("space"));
+
+    word = "spaceless";
+    qsList = helper.getListByWord(word);
+    EXPECT_TRUE(qsList.contains("space"));
+
+    word = "Workspace";
+    qsList = helper.getListByWord(word);
+    EXPECT_TRUE(qsList.contains("space"));
+
+    word = "Dataspace";
+    qsList = helper.getListByWord(word);
+    EXPECT_TRUE(qsList.contains("space"));
+
+    helper.printHash();
+}
 }  // namespace

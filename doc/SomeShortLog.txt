@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE QtCreatorProject>
+<!-- Written by QtCreator 4.7.2, 2021-11-26T00:35:26. -->
+<qtcreator>
+ <data>
+  <variable>EnvironmentId</variable>
+  <value type="QByteArray">{bc03f5bc-81e6-409b-89e7-e3b6b2de986b}</value>
+ </data>
