@@ -26,3 +26,13 @@ heels: 14.29%
 1) describe the test cases
 2) describe the test data
 3) use C++ programming language 
+
+
+Inspiration link: 
+ (https://www.geeksforgeeks.org/find-k-numbers-occurrences-given-array)
+
+This task was done by me 3 years ago: 
+ (https://github.com/Anaga/PrefexTree)
+
+Other task for this company: 
+ (https://github.com/Anaga/LogParserProE)

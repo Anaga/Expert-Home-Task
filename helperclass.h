@@ -10,7 +10,7 @@
 #include <QSet>
 #include <QDebug>
 
-int GetCombinationCount(int N);
+
 
 class helperClass
 {
@@ -23,7 +23,9 @@ public:
     helperClass();
     int getHashSize();
     QStringList getListByWord(const QString word);
-    void printHash();
+    QStringList printHash();
+
+    static int getCombinationCount(int N);
 };
 
 

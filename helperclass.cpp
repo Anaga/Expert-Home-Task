@@ -2,14 +2,6 @@
 #include <QtDebug>
 
 
-int GetCombinationCount(int N)
-{
-    if (N<4) return 0;
-
-    //Sum is (N-2)*(N-3)/2
-    return (((N-2)*(N-3))>>1);
-}
-
 helperClass::helperClass()
 {
 
@@ -79,11 +71,28 @@ QStringList helperClass::getListByWord(const QString word)
     return qslRet;
 }
 
-void helperClass::printHash()
+QStringList helperClass::printHash()
 {
+
+    QStringList qslRet;
+    QString word;
+    QString letters;
+    QString format = "%1 : [%2]";
     QHash<QString, QStringList>::const_iterator i = m_hash.constBegin();
     while (i != m_hash.constEnd()) {
-        qDebug() << i.key() << ": " << i.value() << endl;
+        word = i.key();
+        letters = i.value().join(" ");
+        QString strRow = format.arg(word).arg(letters);
+        qslRet.append(strRow);
         ++i;
     }
+    return qslRet;
+}
+
+int helperClass::getCombinationCount(int N)
+{
+    if (N<4) return 0;
+    if (N==4) return 1;
+    //Combination Count is [(N-2)*(N-3)/2]
+    return (((N-2)*(N-3))>>1);
 }
