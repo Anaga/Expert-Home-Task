@@ -10,7 +10,7 @@ int helperClass::getHashSize()
     return m_hash.size();
 }
 
-QStringList helperClass::GetAllLettersList(const QString word)
+QStringList helperClass::getAllLettersList(const QString word)
 {
     const int lettersCount = 4;
     const int wordLen = word.length();
@@ -63,7 +63,7 @@ QStringList helperClass::getListByWord(const QString word)
         return m_hash.value(word);
     }
     else {
-        qslRet = GetAllLettersList(word);
+        qslRet = getAllLettersList(word);
         m_hash.insert(word, qslRet);
     }
     return qslRet;
@@ -71,7 +71,6 @@ QStringList helperClass::getListByWord(const QString word)
 
 QStringList helperClass::printHash()
 {
-
     QStringList qslRet;
     QString word;
     QString letters;
@@ -95,21 +94,55 @@ int helperClass::getCombinationCount(int N)
     return (((N-2)*(N-3))>>1);
 }
 
-QStringList helperClass::printTopNRows(t_MMap map, int N, int count)
+QStringList helperClass::printBarRows(t_MMap map, int N, int count)
 {
+    QStringList qslRet;
     int rowsToPrint = N;
     t_MMap::const_iterator i = map.constEnd();
-    float percent = 0.0;
-    QString format = "%1 : %2 (%3) of %4";
+    int const barMaxLength = 50;
+
+    --i; //point to end of map (this is max percent) in map
+    QString letters;
+    double percentMax = (static_cast<double>(i.key()*100))/static_cast<double>(count);
+    int fillCount = barMaxLength;
+
+    QString format = "%1:%2";
     while (i != map.constBegin()) {
+        letters = i.value();
+        double percent = (static_cast<double>(i.key()*100.0))/static_cast<double>(count);
+        fillCount = static_cast<int>((percent*barMaxLength)/percentMax);
+
+        QString strRow = format.arg(letters, 10).arg(' ',fillCount,QChar('#'));
+        qInfo() << strRow;
+        qslRet.append(strRow);
+
         --i;
         --rowsToPrint;
-        percent = (static_cast<float>(i.key()*100))/static_cast<float>(count);
-        QString strRow = format.arg(i.value()).arg(percent).arg(i.key()).arg(count);
-        qInfo() << strRow;
+
         if (0==rowsToPrint){
             break;
         }
     }
+    return qslRet;
+}
 
+QStringList helperClass::printTopNRows(t_MMap map, int N, int count)
+{
+    QStringList qslRet;
+    int rowsToPrint = N;
+    t_MMap::const_iterator i = map.constEnd();
+    double percent = 0.0;
+    QString format = "%1 : %2%    (%3 from %4)";
+    while (i != map.constBegin()) {
+        --i;
+        --rowsToPrint;
+        percent = (static_cast<double>(i.key()*100))/static_cast<double>(count);
+        QString strRow = format.arg(i.value(), 10).arg(percent, 1, 'f', 4).arg(i.key()).arg(count);
+        qInfo() << strRow;
+        qslRet.append(strRow);
+        if (0==rowsToPrint){
+            break;
+        }
+    }
+    return qslRet;
 }

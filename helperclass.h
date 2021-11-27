@@ -16,7 +16,7 @@ class helperClass
 private:
     //main data storage
     t_HashStrList m_hash;
-    QStringList GetAllLettersList(const QString word);
+    QStringList getAllLettersList(const QString word);
 
 public:
     helperClass();
@@ -25,8 +25,8 @@ public:
     QStringList printHash();
 
     static int getCombinationCount(int N);
-
-    QStringList printTopNRows(t_MMap map, int N, int count);
+    static QStringList printBarRows(t_MMap map, int N, int count);
+    static QStringList printTopNRows(t_MMap map, int N, int count);
 };
 
 

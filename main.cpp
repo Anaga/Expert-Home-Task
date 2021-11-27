@@ -8,7 +8,7 @@
 #include <QRegularExpression>
 
 
-QStringList process_line(QString line)
+QStringList getWords(QString line)
 {
     QStringList qslRet;
     QRegularExpression re("\\W+");
@@ -22,68 +22,68 @@ QStringList process_line(QString line)
     return qslRet;
 }
 
-void printTopNRow(t_MMap map, int N, int totalCount){
+t_HashStrInt analyseFile(QFile* pFile){
+    QTextStream inputFile(pFile);
+    helperClass helper;
+    t_HashStrInt hashTable;
+    while (!inputFile.atEnd()) {
+        QStringList qslLineWords = getWords(inputFile.readLine());
 
+        for(int i=0; i<qslLineWords.size(); i++){
+            QStringList qslAllCombination = helper.getListByWord(qslLineWords.at(i));
+            for(int j=0; j<qslAllCombination.size(); j++){
+                QString letters = qslAllCombination.at(j);
+                int count = 1;
+                if (hashTable.contains(letters)) {
+                    count += hashTable.value(letters);
+                }
+                hashTable.insert(letters, count);
+            }
+        }
+    }
+    return hashTable;
+}
+
+t_MMap convertHashToMultiMap(t_HashStrInt hash, int* total){
+    t_MMap mapRet;
+
+    QString letters;
+    int counts;
+
+    t_HashStrInt::const_iterator i = hash.constBegin();
+    while (i != hash.constEnd()) {
+        letters = i.key();
+        counts = i.value();
+        *total+=counts;
+
+        mapRet.insert(counts,letters);
+        ++i;
+    }
+    return mapRet;
 }
 
 int main(int argc, char *argv[])
 {
-    helperClass helper;
-    t_HashStrInt unickHash;
-    t_MMap multiMap;
-
+    int const rowsToPrint = 10;
     if (argc > 1){
         char *fileName = argv[1];
-        qInfo() << "Tray to parse file " << fileName;
+        qInfo() << "Try to parse file " << fileName;
 
         QFile file(fileName);
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
             qInfo() << "Can't open file";
             return -1;
         }
-        QTextStream in(&file);
-        while (!in.atEnd()) {
-            QString line = in.readLine();
-            QStringList qslLineWords = process_line(line);
-            for(int i=0; i<qslLineWords.size(); i++){
-                QStringList qslAllCombination = helper.getListByWord(qslLineWords.at(i));
-                //qInfo() << "word to parse: " << qslLineWords.at(i);
-                //qInfo() << "go to: " << qslAllCombination;
-                for(int j=0; j<qslAllCombination.size(); j++){
-                    QString letters = qslAllCombination.at(j);
-                    int count = 1;
-                    if (unickHash.contains(letters)) {
-                        count += unickHash.value(letters);
-                    }
-                    unickHash.insert(letters, count);
-                }
-            }
-        }
-        qInfo() << "Print out all unic letters with 4+ chars";
-        t_HashStrInt::const_iterator i = unickHash.constBegin();
-        while (i != unickHash.constEnd()) {
-           // qInfo() << "N:" << i.value() << "\t: " << i.key();
-            ++i;
-        }
 
+        t_HashStrInt unickHash = analyseFile(&file);
         qInfo() << "Now we add all items from unickHash to multiMap, to sort all by counts";
 
-        i = unickHash.constBegin();
-        QString letters;
-        int counts;
         int total = 0;
-        while (i != unickHash.constEnd()) {
-            letters = i.key();
-            counts = i.value();
-            total+=counts;
+        t_MMap multiMap = convertHashToMultiMap(unickHash, &total);
+        qInfo() << "Now all items are sorted in multiMap, total count is " << total;
 
-            multiMap.insert(counts,letters);
-            ++i;
-        }
-
-        qInfo() << "Now all items are sorted in multiMap";
-        //printTopNRow(multiMap, 10, total);
-        helper.printTopNRows(multiMap, 10, total);
+        helperClass::printTopNRows(multiMap, rowsToPrint, total);
+        helperClass::printBarRows(multiMap, rowsToPrint, total);
 
         return 0;
     }
