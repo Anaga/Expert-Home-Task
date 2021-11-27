@@ -1,11 +1,10 @@
 #include "helperclass.h"
 #include <gtest/gtest.h>
+#include <types.h>
+
 #include <QtDebug>
-
-//#include <iostream>
-
 #include <QFile>
-#include <QMap>
+
 #include <QRegularExpression>
 
 
@@ -23,9 +22,9 @@ QStringList process_line(QString line)
     return qslRet;
 }
 
-void printTopNRow(QMultiMap<int, QString> map, int N, int totalCount){
+void printTopNRow(t_MMap map, int N, int totalCount){
     int rowsToPrint = N;
-    QMultiMap<int, QString>::const_iterator i = map.constEnd();
+    t_MMap::const_iterator i = map.constEnd();
     float percent = 0.0;
     while (i != map.constBegin()) {
         --i;
@@ -41,8 +40,8 @@ void printTopNRow(QMultiMap<int, QString> map, int N, int totalCount){
 int main(int argc, char *argv[])
 {
     helperClass helper;
-    QHash<QString, int> unickHash;
-    QMultiMap<int, QString> multiMap;
+    t_HashStrInt unickHash;
+    t_MMap multiMap;
 
     if (argc > 1){
         char *fileName = argv[1];
@@ -72,7 +71,7 @@ int main(int argc, char *argv[])
             }
         }
         qInfo() << "Print out all unic letters with 4+ chars";
-        QHash<QString, int>::const_iterator i = unickHash.constBegin();
+        t_HashStrInt::const_iterator i = unickHash.constBegin();
         while (i != unickHash.constEnd()) {
            // qInfo() << "N:" << i.value() << "\t: " << i.key();
             ++i;
@@ -99,10 +98,6 @@ int main(int argc, char *argv[])
         return 0;
     }
     else {
-        helper.printHash();
-        QStringList qsList;
-        qsList = helper.getListByWord("Item");
-
         ::testing::InitGoogleTest(&argc, argv);
         return RUN_ALL_TESTS();
     }

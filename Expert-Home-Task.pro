@@ -7,7 +7,8 @@ CONFIG += thread
 CONFIG += qt
 
 HEADERS += \
-    helperclass.h
+    helperclass.h \
+    types.h
 
 SOURCES += \
     main.cpp \

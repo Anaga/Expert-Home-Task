@@ -29,10 +29,10 @@ heels: 14.29%
 
 
 Inspiration link: 
- (https://www.geeksforgeeks.org/find-k-numbers-occurrences-given-array)
+ https://www.geeksforgeeks.org/find-k-numbers-occurrences-given-array
 
 This task was done by me 3 years ago: 
- (https://github.com/Anaga/PrefexTree)
+ https://github.com/Anaga/PrefexTree
 
 Other task for this company: 
- (https://github.com/Anaga/LogParserProE)
+ https://github.com/Anaga/LogParserProE

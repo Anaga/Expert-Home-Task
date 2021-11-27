@@ -5,18 +5,17 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock-matchers.h>
-#include <QStringList>
-#include <QHash>
-#include <QSet>
-#include <QDebug>
 
+#include <types.h>
+
+#include <QDebug>
 
 
 class helperClass
 {
 private:
     //main data storage
-    QHash<QString, QStringList> m_hash;
+    t_HashStrList m_hash;
     QStringList GetAllLettersList(const QString word);
 
 public:
@@ -26,6 +25,8 @@ public:
     QStringList printHash();
 
     static int getCombinationCount(int N);
+
+    QStringList printTopNRows(int N, int count);
 };
 
 

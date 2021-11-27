@@ -1,6 +1,4 @@
 #include "helperclass.h"
-#include <QtDebug>
-
 
 helperClass::helperClass()
 {
@@ -95,4 +93,9 @@ int helperClass::getCombinationCount(int N)
     if (N==4) return 1;
     //Combination Count is [(N-2)*(N-3)/2]
     return (((N-2)*(N-3))>>1);
+}
+
+QStringList helperClass::printTopNRows(int N, int count)
+{
+
 }
