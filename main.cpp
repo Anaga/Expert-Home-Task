@@ -23,18 +23,7 @@ QStringList process_line(QString line)
 }
 
 void printTopNRow(t_MMap map, int N, int totalCount){
-    int rowsToPrint = N;
-    t_MMap::const_iterator i = map.constEnd();
-    float percent = 0.0;
-    while (i != map.constBegin()) {
-        --i;
-        --rowsToPrint;
-        percent = (static_cast<float>(i.key()*100))/static_cast<float>(totalCount);
-        qInfo() << i.value() << ":" << percent << "% \t: (" << i.key() << ") of " << totalCount;
-        if (0==rowsToPrint){
-            break;
-        }
-    }
+
 }
 
 int main(int argc, char *argv[])
@@ -93,7 +82,8 @@ int main(int argc, char *argv[])
         }
 
         qInfo() << "Now all items are sorted in multiMap";
-        printTopNRow(multiMap, 10, total);
+        //printTopNRow(multiMap, 10, total);
+        helper.printTopNRows(multiMap, 10, total);
 
         return 0;
     }

@@ -26,7 +26,7 @@ public:
 
     static int getCombinationCount(int N);
 
-    QStringList printTopNRows(int N, int count);
+    QStringList printTopNRows(t_MMap map, int N, int count);
 };
 
 

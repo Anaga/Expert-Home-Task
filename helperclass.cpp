@@ -95,7 +95,21 @@ int helperClass::getCombinationCount(int N)
     return (((N-2)*(N-3))>>1);
 }
 
-QStringList helperClass::printTopNRows(int N, int count)
+QStringList helperClass::printTopNRows(t_MMap map, int N, int count)
 {
+    int rowsToPrint = N;
+    t_MMap::const_iterator i = map.constEnd();
+    float percent = 0.0;
+    QString format = "%1 : %2 (%3) of %4";
+    while (i != map.constBegin()) {
+        --i;
+        --rowsToPrint;
+        percent = (static_cast<float>(i.key()*100))/static_cast<float>(count);
+        QString strRow = format.arg(i.value()).arg(percent).arg(i.key()).arg(count);
+        qInfo() << strRow;
+        if (0==rowsToPrint){
+            break;
+        }
+    }
 
 }
