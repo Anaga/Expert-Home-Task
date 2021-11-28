@@ -74,16 +74,26 @@ int main(int argc, char *argv[])
             qInfo() << "Can't open file";
             return -1;
         }
-
+        qInfo() << "Start to analyse file" << file.fileName();
         t_HashStrInt unickHash = analyseFile(&file);
-        qInfo() << "Now we add all items from unickHash to multiMap, to sort all by counts";
 
         int total = 0;
+        qInfo() << "Analyse done, convert hash to multiMap";
         t_MMap multiMap = convertHashToMultiMap(unickHash, &total);
-        qInfo() << "Now all items are sorted in multiMap, total count is " << total;
+        qInfo() << "Now all items are sorted in multiMap, total count is" << total;
 
-        helperClass::printTopNRows(multiMap, rowsToPrint, total);
-        helperClass::printBarRows(multiMap, rowsToPrint, total);
+        qInfo() << "Print" << rowsToPrint << "most common letter combinations in percentage:";
+        QStringList qslRows;
+        qslRows = helperClass::printTopNRows(multiMap, rowsToPrint, total);
+        for (int i=0; i<qslRows.size(); i++){
+            qInfo() << qslRows.at(i);
+        }
+
+        qInfo() << "Print" << rowsToPrint << "most common letter combinations in a bar chart:";
+        qslRows = helperClass::printBarRows(multiMap, rowsToPrint, total);
+        for (int i=0; i<qslRows.size(); i++){
+            qInfo() << qslRows.at(i);
+        }
 
         return 0;
     }

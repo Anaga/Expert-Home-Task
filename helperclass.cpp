@@ -113,7 +113,7 @@ QStringList helperClass::printBarRows(t_MMap map, int N, int count)
         fillCount = static_cast<int>((percent*barMaxLength)/percentMax);
 
         QString strRow = format.arg(letters, 10).arg(' ',fillCount,QChar('#'));
-        qInfo() << strRow;
+        //qInfo() << strRow;
         qslRet.append(strRow);
 
         --i;
@@ -129,18 +129,18 @@ QStringList helperClass::printBarRows(t_MMap map, int N, int count)
 QStringList helperClass::printTopNRows(t_MMap map, int N, int count)
 {
     QStringList qslRet;
-    int rowsToPrint = N;
-    t_MMap::const_iterator i = map.constEnd();
     double percent = 0.0;
-    QString format = "%1 : %2%    (%3 from %4)";
-    while (i != map.constBegin()) {
-        --i;
-        --rowsToPrint;
-        percent = (static_cast<double>(i.key()*100))/static_cast<double>(count);
-        QString strRow = format.arg(i.value(), 10).arg(percent, 1, 'f', 4).arg(i.key()).arg(count);
-        qInfo() << strRow;
+    QString format = "%1 : %2%    (%3 of %4)";
+
+    t_MMap::const_iterator iter = map.constEnd();
+    for (int i=0; i<N; i++){
+        iter--; // point to last of map element (this is max percent)
+        percent = (static_cast<double>(iter.key()*100))/static_cast<double>(count);
+        QString strRow = format.arg(iter.value(), 10).arg(percent, 1, 'f', 4).arg(iter.key()).arg(count);
+        //qInfo() << strRow;
         qslRet.append(strRow);
-        if (0==rowsToPrint){
+
+        if (iter==map.constBegin()){
             break;
         }
     }
