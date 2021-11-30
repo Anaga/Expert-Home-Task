@@ -28,12 +28,12 @@ heels: 14.29%
 3) use C++ programming language 
 
 # How to run
-If you run this application without argument - Unit test will be executed.
-If you run this application with argument - file location, it will analyse this file.
+* If you run this application without argument - Unit test will be executed.
+* If you run this application with argument - file location, it will analyse this file.
 
 Inspiration link: 
  https://www.geeksforgeeks.org/find-k-numbers-occurrences-given-array
 
-Here are links to my solutions of technical tasks that I did for your company 3 years ago
- https://github.com/Anaga/PrefexTree
- https://github.com/Anaga/LogParserProE
+Here are links to my solutions of technical tasks that I did for this company 3 years ago
+* https://github.com/Anaga/PrefexTree
+* https://github.com/Anaga/LogParserProE
