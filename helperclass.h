@@ -9,6 +9,7 @@
 #include <types.h>
 
 #include <QDebug>
+#include <QRegularExpression>
 
 
 class helperClass
@@ -16,7 +17,7 @@ class helperClass
 private:
     //main data storage
     t_HashStrList m_hash;
-    QStringList getAllLettersList(const QString word);
+    QStringList getAllLetterList(const QString word);
 
 public:
     helperClass();
@@ -24,6 +25,7 @@ public:
     QStringList getListByWord(const QString word);
     QStringList printHash();
 
+    static QStringList getWords(QString line);
     static int getCombinationCount(int N);
     static QStringList printBarRows(t_MMap map, int N, int count);
     static QStringList printTopNRows(t_MMap map, int N, int count);

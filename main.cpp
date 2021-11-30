@@ -5,29 +5,12 @@
 #include <QtDebug>
 #include <QFile>
 
-#include <QRegularExpression>
-
-
-QStringList getWords(QString line)
-{
-    QStringList qslRet;
-    QRegularExpression re("\\W+");
-    QStringList qslWords = line.split(re);
-
-    for(int i=0; i<qslWords.size(); i++){
-        if (qslWords.at(i).size() > 3) {
-            qslRet.append(qslWords.at(i));
-        }
-    }
-    return qslRet;
-}
-
 t_HashStrInt analyseFile(QFile* pFile){
     QTextStream inputFile(pFile);
     helperClass helper;
     t_HashStrInt hashTable;
     while (!inputFile.atEnd()) {
-        QStringList qslLineWords = getWords(inputFile.readLine());
+        QStringList qslLineWords = helper.getWords(inputFile.readLine());
 
         for(int i=0; i<qslLineWords.size(); i++){
             QStringList qslAllCombination = helper.getListByWord(qslLineWords.at(i));
@@ -39,7 +22,7 @@ t_HashStrInt analyseFile(QFile* pFile){
                 }
                 hashTable.insert(letters, count);
             }
-        }
+        }        
     }
     return hashTable;
 }

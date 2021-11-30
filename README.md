@@ -1,5 +1,5 @@
-# Expert Home Task
-Home task for one pro expert company
+# Home Task
+Home task for one company
 
 # DESCRIPTION OF THE ASSIGNEMENT:
 Create a program that uses any text file with random content as an input, and checks
@@ -27,12 +27,13 @@ heels: 14.29%
 2) describe the test data
 3) use C++ programming language 
 
+# How to run
+If you run this application without argument - Unit test will be executed.
+If you run this application with argument - file location, it will analyse this file.
 
 Inspiration link: 
  https://www.geeksforgeeks.org/find-k-numbers-occurrences-given-array
 
-This task was done by me 3 years ago: 
+Here are links to my solutions of technical tasks that I did for your company 3 years ago
  https://github.com/Anaga/PrefexTree
-
-Other task for this company: 
  https://github.com/Anaga/LogParserProE

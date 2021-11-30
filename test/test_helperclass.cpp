@@ -123,7 +123,6 @@ TEST(getListByWord, DoubleWord) {
     qsList = helper.getListByWord(word);
     EXPECT_EQ(1, helper.getHashSize());
     EXPECT_EQ(helper.getCombinationCount(word.length()), qsList.length());
-    //qInfo()<< qsList;
 }
 
 TEST(getListByWord, TrippleWord) {
@@ -158,7 +157,7 @@ TEST(getListByWord, SomeSpace) {
 }
 
 
-// Test helper class function getListByWord
+// Test helper class function printHash
 TEST(printHash, ZeroInput){
     helperClass helper;
     QStringList qsList;
@@ -214,11 +213,11 @@ TEST(printTopNRows, EmptyMap){
     EXPECT_TRUE(qsList.isEmpty());
 }
 
-TEST(printTopNRows, ZeroTopLines){
+TEST(printTopNRows, ZeroTopRows){
     t_MMap testObjMap;
-    testObjMap.insert(3,"Letter : [Lett ette tter Lette etter Letter]");
-    testObjMap.insert(2,"Value : [Valu alue Value]]");
-    testObjMap.insert(4,"Test : [Test]");
+    testObjMap.insert(3,"Letter");
+    testObjMap.insert(2,"Value");
+    testObjMap.insert(4,"Test");
     int total = 3+2+4;
 
     QStringList qsList;
@@ -226,7 +225,30 @@ TEST(printTopNRows, ZeroTopLines){
     EXPECT_TRUE(qsList.isEmpty());
 }
 
-TEST(printTopNRows, FirstTopLines){
+
+TEST(printTopNRows, OneRowMap){
+    t_MMap testObjMap;
+    testObjMap.insert(1,"Test");
+    int total = 1;
+
+    QStringList qsList;
+    qsList =  helperClass::printTopNRows(testObjMap, 1, total);
+    EXPECT_EQ(1, qsList.size());
+    EXPECT_TRUE(qsList.contains("      Test : 100.0000%    (1 of 1)"));
+}
+
+TEST(printTopNRows, OneRowMapPercent){
+    t_MMap testObjMap;
+    testObjMap.insert(4,"Test");
+    int total = 4;
+
+    QStringList qsList;
+    qsList =  helperClass::printTopNRows(testObjMap, 1, total);
+    EXPECT_EQ(1, qsList.size());
+    EXPECT_TRUE(qsList.contains("      Test : 100.0000%    (4 of 4)"));
+}
+
+TEST(printTopNRows, FirstTopRows){
     t_MMap testObjMap;
     testObjMap.insert(2,"Value");
     testObjMap.insert(2,"alue");
@@ -238,11 +260,10 @@ TEST(printTopNRows, FirstTopLines){
     qsList =  helperClass::printTopNRows(testObjMap, 1, total);
     EXPECT_FALSE(qsList.isEmpty());
     EXPECT_EQ(1, qsList.size());
-    //qInfo() << qsList;
     EXPECT_TRUE(qsList.contains("      Test : 40.0000%    (4 of 10)"));
 }
 
-TEST(printTopNRows, FirstFourLines){
+TEST(printTopNRows, FirstFourRows){
     t_MMap testObjMap;
     testObjMap.insert(1,"Value");
     testObjMap.insert(3,"alue");
@@ -254,7 +275,7 @@ TEST(printTopNRows, FirstFourLines){
     qsList =  helperClass::printTopNRows(testObjMap, 4, total);
     EXPECT_FALSE(qsList.isEmpty());
     EXPECT_EQ(4, qsList.size());
-    //qInfo() << qsList;
+
     EXPECT_TRUE(qsList.contains("      Test : 44.4444%    (4 of 9)"));
     EXPECT_TRUE(qsList.contains("      alue : 33.3333%    (3 of 9)"));
     EXPECT_TRUE(qsList.contains("      Valu : 11.1111%    (1 of 9)"));
@@ -263,6 +284,174 @@ TEST(printTopNRows, FirstFourLines){
     // check order:
     EXPECT_EQ(qsList.at(0), "      Test : 44.4444%    (4 of 9)");
     EXPECT_EQ(qsList.at(1), "      alue : 33.3333%    (3 of 9)");
+}
+
+// Test helper class static function printBarRows
+TEST(printBarRows, EmptyMap){
+    t_MMap testObjMap;
+    QStringList qsList;
+    qsList =  helperClass::printBarRows(testObjMap, 0, 0);
+    EXPECT_TRUE(qsList.isEmpty());
+}
+
+TEST(printBarRows, ZeroTopRows){
+    t_MMap testObjMap;
+    testObjMap.insert(3,"Letter");
+    testObjMap.insert(2,"Value");
+    testObjMap.insert(4,"Test");
+    int total = 3+2+4;
+
+    QStringList qsList;
+    qsList =  helperClass::printBarRows(testObjMap, 0, total);
+    EXPECT_TRUE(qsList.isEmpty());
+}
+
+
+TEST(printBarRows, OneRowMap){
+    t_MMap testObjMap;
+    testObjMap.insert(1,"Test");
+    int total = 1;
+
+    QStringList qsList;
+    qsList =  helperClass::printBarRows(testObjMap, 1, total);
+    EXPECT_EQ(1, qsList.size());
+    //First row in printBarRows shall always have barMaxLength -1 # (49)
+    EXPECT_EQ(qsList.at(0), "      Test:################################################# ");
+    EXPECT_EQ(49, qsList.at(0).count('#'));
+}
+
+TEST(printBarRows, FirstTopLines){
+    t_MMap testObjMap;
+    testObjMap.insert(2,"Value");
+    testObjMap.insert(2,"alue");
+    testObjMap.insert(2,"Valu");
+    testObjMap.insert(4,"Test");
+    int total = 2+2+2+4;
+
+    QStringList qsList;
+    qsList =  helperClass::printBarRows(testObjMap, 1, total);
+    EXPECT_FALSE(qsList.isEmpty());
+    EXPECT_EQ(1, qsList.size());
+    //First row in printBarRows shall always have barMaxLength -1 # (49)
+    EXPECT_EQ(qsList.at(0), "      Test:################################################# ");
+    EXPECT_EQ(49, qsList.at(0).count('#'));
+}
+
+TEST(printBarRows, FirstFourLines){
+    t_MMap testObjMap;
+    testObjMap.insert(1,"Value");
+    testObjMap.insert(3,"alue");
+    testObjMap.insert(1,"Valu");
+    testObjMap.insert(4,"Test");
+    int total = 1+3+1+4;
+
+    QStringList qsList;
+    qsList =  helperClass::printBarRows(testObjMap, 4, total);
+    EXPECT_FALSE(qsList.isEmpty());
+    EXPECT_EQ(4, qsList.size());
+
+    qInfo() << qsList;
+    //First row in printBarRows shall always have barMaxLength -1 # (49)
+    EXPECT_EQ(qsList.at(0), "      Test:################################################# ");
+    EXPECT_EQ(49, qsList.at(0).count('#'));
+
+    //Second row in printBarRows shall have (barMaxLength * count percent) normalise by top row (4). For 3 from 9 it will be ((3/9)*(50*9/4)) = (0.75*50)-1 = 36
+    EXPECT_EQ(qsList.at(1), "      alue:#################################### ");
+    EXPECT_EQ(36, qsList.at(1).count('#'));
+
+    //Next row - 1 from 9 - it will be (1/4 * 50) = (50/4)-1 = 11
+    EXPECT_TRUE(qsList.contains("      Valu:########### "));
+    EXPECT_EQ(11, qsList.at(2).count('#'));
+
+    //Next row - the same
+    EXPECT_TRUE(qsList.contains("     Value:########### "));
+    EXPECT_EQ(11, qsList.at(2).count('#'));
+}
+
+// Test helper class static function getWords
+TEST(getWords, EmptyInput){
+    QStringList qsList;
+    qsList =  helperClass::getWords("");
+    EXPECT_TRUE(qsList.isEmpty());
+}
+
+TEST(getWords, OneWord){
+    QStringList qsList;
+    qsList =  helperClass::getWords("Word");
+    ASSERT_FALSE(qsList.isEmpty());
+    EXPECT_EQ(qsList.at(0), "Word");
+}
+
+TEST(getWords, OneShortWord){
+    QStringList qsList;
+    qsList =  helperClass::getWords("Sun");
+    EXPECT_TRUE(qsList.isEmpty());
+}
+
+TEST(getWords, FourShortWord){
+    QStringList qsList;
+    qsList =  helperClass::getWords("The Sun is a ");
+    EXPECT_TRUE(qsList.isEmpty());
+}
+
+TEST(getWords, SentenceWithOneBigWord){
+    QStringList qsList;
+    qsList =  helperClass::getWords("The Sun is a star");
+    ASSERT_FALSE(qsList.isEmpty());
+    EXPECT_EQ(qsList.at(0), "star");
+}
+
+TEST(getWords, OneLine){
+    QStringList qsList;
+    QString line = "This documentation describes deployment process for Windows. We refer to the plug & paint example application through out the document to demonstrate the deployment process.";
+    qsList =  helperClass::getWords(line);
+    ASSERT_FALSE(qsList.isEmpty());
+    EXPECT_EQ(qsList.size(), 16);
+    EXPECT_TRUE(qsList.contains("documentation"));
+    EXPECT_TRUE(qsList.contains("Windows"));
+    EXPECT_TRUE(qsList.contains("application"));
+    EXPECT_TRUE(qsList.contains("document"));
+    EXPECT_TRUE(qsList.contains("demonstrate"));
+    EXPECT_TRUE(qsList.contains("deployment"));
+}
+
+TEST(getWords, OneLineWithRepeatWords){
+    QStringList qsList;
+    qsList =  helperClass::getWords("Qt for Windows - Deployment, Qt for Windows - Deployment");
+    ASSERT_FALSE(qsList.isEmpty());
+    EXPECT_EQ(qsList.size(), 4);
+    EXPECT_EQ(qsList.at(0), "Windows");
+    EXPECT_EQ(qsList.at(1), "Deployment");
+    EXPECT_EQ(qsList.at(2), "Windows");
+    EXPECT_EQ(qsList.at(3), "Deployment");
+}
+
+TEST(getWords, LineWithNotOnlyLetters){
+    QStringList qsList;
+    QString line = "Strings can be added to a list using the insert() append(), operator+=() and operator<<() functions.";
+    qsList =  helperClass::getWords(line);
+    ASSERT_FALSE(qsList.isEmpty());
+    EXPECT_EQ(qsList.size(), 9);
+    EXPECT_TRUE(qsList.contains("Strings"));
+    EXPECT_TRUE(qsList.contains("added"));
+    EXPECT_TRUE(qsList.contains("list"));
+    EXPECT_TRUE(qsList.contains("using"));
+    EXPECT_TRUE(qsList.contains("insert"));
+    EXPECT_TRUE(qsList.contains("append"));
+    EXPECT_TRUE(qsList.contains("operator"));
+    EXPECT_TRUE(qsList.contains("functions"));
+}
+
+TEST(getWords, AssemblerLine){
+    QStringList qsList;
+    QString line = "        xor     %rax, %rax              # rax will hold the current number";
+    qsList =  helperClass::getWords(line);
+    ASSERT_FALSE(qsList.isEmpty());
+    EXPECT_EQ(qsList.size(),4);
+    EXPECT_TRUE(qsList.contains("will"));
+    EXPECT_TRUE(qsList.contains("hold"));
+    EXPECT_TRUE(qsList.contains("current"));
+    EXPECT_TRUE(qsList.contains("number"));
 }
 
 }  // namespace
